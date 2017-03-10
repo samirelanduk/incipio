@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def create_package(package, location, git=True):
+def create_package(package, location, git=True, env=False):
     if not isinstance(package, str):
         raise TypeError("package name must be str, not '%s'" % str(package))
     if not isinstance(location, str):
@@ -10,6 +10,10 @@ def create_package(package, location, git=True):
     if git:
         git_init(os.path.sep.join([location, package]))
         git_ignore(os.path.sep.join([location, package]))
+    if env is True:
+        create_env(os.path.sep.join([location, package]))
+    elif env:
+        create_env(os.path.sep.join([location, package]), name=env)
 
 
 def git_init(location):
@@ -17,15 +21,6 @@ def git_init(location):
         raise TypeError("location must be str, not '%s'" % str(location))
     with open(os.devnull, 'w') as FNULL:
         subprocess.call("git init %s" % location, shell=True, stdout=FNULL)
-
-
-def create_env(location, name="env"):
-    with open(os.devnull, 'w') as FNULL:
-        subprocess.call(
-         "virtualenv -p python3 %s" % os.path.sep.join([location, name]),
-         shell=True,
-         stdout=FNULL
-        )
 
 
 def git_ignore(location, ignore=None):
@@ -44,3 +39,12 @@ def git_ignore(location, ignore=None):
          "dist",
          "*.egg-info",
         ] + ignore))
+
+
+def create_env(location, name="env"):
+    with open(os.devnull, 'w') as FNULL:
+        subprocess.call(
+         "virtualenv -p python3 %s" % os.path.sep.join([location, name]),
+         shell=True,
+         stdout=FNULL
+        )

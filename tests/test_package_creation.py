@@ -108,3 +108,21 @@ class PackageCreationParameterTests(IncipioTest):
     def test_can_choose_not_to_git_init(self, mock_ignore):
         create_package("testpack", "container", git=False)
         self.assertFalse(mock_ignore.called)
+
+
+    @patch("incipio.package.create_env")
+    def test_create_env_not_called_by_default(self, mock_env):
+        create_package("testpack", "container")
+        self.assertFalse(mock_env.called)
+
+
+    @patch("incipio.package.create_env")
+    def test_can_choose_to_create_env(self, mock_env):
+        create_package("testpack", "container", env=True)
+        mock_env.assert_called_with("container/testpack")
+
+
+    @patch("incipio.package.create_env")
+    def test_can_provide_env_name(self, mock_env):
+        create_package("testpack", "container", env="macenv")
+        mock_env.assert_called_with("container/testpack", name="macenv")
