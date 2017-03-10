@@ -1,7 +1,7 @@
 import os
 from unittest.mock import patch
 from base import IncipioTest
-from incipio.package import create_package, git_init, git_ignore
+from incipio.package import create_package, git_init, git_ignore, create_env
 
 class BasicCreationTests(IncipioTest):
 
@@ -60,6 +60,27 @@ class GitIgnoreTests(IncipioTest):
     def test_custom_ignore_must_be_list(self):
         with self.assertRaises(TypeError):
             git_ignore("container", ignore=("noA", "noB"))
+
+
+
+class VenvTests(IncipioTest):
+
+    @patch("subprocess.call")
+    def test_can_create_virtual_env(self, mock_call):
+        create_env("container")
+        self.assertEqual(
+         mock_call.call_args[0][0],
+         "virtualenv -p python3 container/env"
+        )
+
+
+    @patch("subprocess.call")
+    def test_can_create_virtual_env_with_custom_name(self, mock_call):
+        create_env("container", name="speshenv")
+        self.assertEqual(
+         mock_call.call_args[0][0],
+         "virtualenv -p python3 container/speshenv"
+        )
 
 
 

@@ -19,6 +19,15 @@ def git_init(location):
         subprocess.call("git init %s" % location, shell=True, stdout=FNULL)
 
 
+def create_env(location, name="env"):
+    with open(os.devnull, 'w') as FNULL:
+        subprocess.call(
+         "virtualenv -p python3 %s" % os.path.sep.join([location, name]),
+         shell=True,
+         stdout=FNULL
+        )
+
+
 def git_ignore(location, ignore=None):
     if ignore is not None and not isinstance(ignore, list):
         raise TypeError("ignore argument only accepts lists")
