@@ -1,4 +1,5 @@
 import os
+from unittest.mock import patch
 from base import IncipioTest
 from incipio.package import create_package, git_init
 
@@ -30,3 +31,18 @@ class GitInitTests(IncipioTest):
     def test_git_init_needs_str_location(self):
         with self.assertRaises(TypeError):
             git_init(100)
+
+
+
+class PackageCreationParameterTests(IncipioTest):
+
+    @patch("incipio.package.git_init")
+    def test_git_init_called_by_default(self, mock_init):
+        create_package("testpack", "container")
+        mock_init.assert_called_with("container/testpack")
+
+
+    @patch("incipio.package.git_init")
+    def test_can_choose_not_to_git_init(self, mock_init):
+        create_package("testpack", "container", git=False)
+        self.assertFalse(mock_init.called)
