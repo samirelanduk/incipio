@@ -57,6 +57,7 @@ class GitIgnoreTests(IncipioTest):
         self.assertEqual(lines[-1], "noB")
 
 
+
 class PackageCreationParameterTests(IncipioTest):
 
     @patch("incipio.package.git_init")
@@ -69,3 +70,15 @@ class PackageCreationParameterTests(IncipioTest):
     def test_can_choose_not_to_git_init(self, mock_init):
         create_package("testpack", "container", git=False)
         self.assertFalse(mock_init.called)
+
+
+    @patch("incipio.package.git_ignore")
+    def test_git_ignore_called_by_default(self, mock_ignore):
+        create_package("testpack", "container")
+        mock_ignore.assert_called_with("container/testpack")
+
+
+    @patch("incipio.package.git_ignore")
+    def test_can_choose_not_to_git_init(self, mock_ignore):
+        create_package("testpack", "container", git=False)
+        self.assertFalse(mock_ignore.called)

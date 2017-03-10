@@ -7,7 +7,9 @@ def create_package(package, location, git=True):
     if not isinstance(location, str):
         raise TypeError("location must be str, not '%s'" % str(location))
     os.makedirs("%s%s%s" % (location, os.path.sep, package))
-    if git: git_init(os.path.sep.join([location, package]))
+    if git:
+        git_init(os.path.sep.join([location, package]))
+        git_ignore(os.path.sep.join([location, package]))
 
 
 def git_init(location):
