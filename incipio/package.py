@@ -20,6 +20,8 @@ def git_init(location):
 
 
 def git_ignore(location, ignore=None):
+    if ignore is not None and not isinstance(ignore, list):
+        raise TypeError("ignore argument only accepts lists")
     ignore = ignore if ignore else []
     with open(os.path.sep.join([location, ".gitignore"]), "w") as f:
         f.write("\n".join([

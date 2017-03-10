@@ -57,6 +57,11 @@ class GitIgnoreTests(IncipioTest):
         self.assertEqual(lines[-1], "noB")
 
 
+    def test_custom_ignore_must_be_list(self):
+        with self.assertRaises(TypeError):
+            git_ignore("container", ignore=("noA", "noB"))
+
+
 
 class PackageCreationParameterTests(IncipioTest):
 
