@@ -1,7 +1,7 @@
 import os
 from unittest.mock import patch
 from base import IncipioTest
-from incipio.package import create_package, git_init
+from incipio.package import create_package, git_init, git_ignore
 
 class BasicCreationTests(IncipioTest):
 
@@ -32,6 +32,29 @@ class GitInitTests(IncipioTest):
         with self.assertRaises(TypeError):
             git_init(100)
 
+
+
+class GitIgnoreTests(IncipioTest):
+
+    def test_can_create_gitignore(self):
+        git_ignore("container")
+        self.assertIn(".gitignore", os.listdir("container"))
+
+
+    def test_gitignore_has_basic_stuff(self):
+        git_ignore("container")
+        with open("container/.gitignore") as f:
+            contents = f.read()
+        self.assertIn("__pycache__", contents)
+        self.assertIn("*.pyc", contents)
+
+
+    def test_can_add_own_lines_to_gitignore(self):
+        git_ignore("container", ignore=["noA", "noB"])
+        with open("container/.gitignore") as f:
+            lines = f.readlines()
+        self.assertEqual(lines[-2], "noA\n")
+        self.assertEqual(lines[-1], "noB")
 
 
 class PackageCreationParameterTests(IncipioTest):
