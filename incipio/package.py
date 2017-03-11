@@ -48,3 +48,10 @@ def create_env(location, name="env"):
          shell=True,
          stdout=FNULL
         )
+
+
+def create_python_package(location, name, author=None):
+    os.makedirs("%s%s%s" % (location, os.path.sep, name))
+    with open(os.path.sep.join([location, name, "__init__.py"]), "w") as f:
+        f.write('version = "0.1.0"\n')
+        if author: f.write('author = "%s"' % author)

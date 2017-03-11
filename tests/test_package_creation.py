@@ -2,6 +2,7 @@ import os
 from unittest.mock import patch
 from base import IncipioTest
 from incipio.package import create_package, git_init, git_ignore, create_env
+from incipio.package import create_python_package
 
 class BasicCreationTests(IncipioTest):
 
@@ -81,6 +82,29 @@ class VenvTests(IncipioTest):
          mock_call.call_args[0][0],
          "virtualenv -p python3 container/speshenv"
         )
+
+
+
+class PythonPackageCreationTests(IncipioTest):
+
+    def test_can_make_python_package(self):
+        create_python_package("container", "packagename")
+        self.assertIn("packagename", os.listdir("container"))
+        self.assertIn("__init__.py", os.listdir("container/packagename"))
+
+
+    def test_init_has_version(self):
+        create_python_package("container", "packagename")
+        with open("container/packagename/__init__.py") as f:
+            self.assertIn('version = "0.1.0"', f.read())
+
+
+    def test_init_can_have_name(self):
+        create_python_package("container", "packagename", author="Sam")
+        with open("container/packagename/__init__.py") as f:
+            data = f.read()
+            self.assertIn('version = "0.1.0"', data)
+            self.assertIn('author = "Sam"', data)
 
 
 
