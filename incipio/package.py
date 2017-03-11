@@ -58,3 +58,9 @@ def create_python_package(location, name, author=None):
     with open(os.path.sep.join([location, name, "__init__.py"]), "w") as f:
         f.write('version = "0.1.0"\n')
         if author: f.write('author = "%s"' % author)
+
+
+def create_test_directory(location):
+    os.makedirs("%s%s%s" % (location, os.path.sep, "tests"))
+    with open(os.path.sep.join([location, "tests", "__init__.py"]), "w") as f:
+        f.write("")

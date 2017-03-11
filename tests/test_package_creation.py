@@ -2,7 +2,7 @@ import os
 from unittest.mock import patch
 from base import IncipioTest
 from incipio.package import create_package, git_init, git_ignore, create_env
-from incipio.package import create_python_package
+from incipio.package import create_python_package, create_test_directory
 
 class BasicCreationTests(IncipioTest):
 
@@ -105,6 +105,15 @@ class PythonPackageCreationTests(IncipioTest):
             data = f.read()
             self.assertIn('version = "0.1.0"', data)
             self.assertIn('author = "Sam"', data)
+
+
+
+class TestDirectoryCreationTests(IncipioTest):
+
+    def test_can_make_test_directory(self):
+        create_test_directory("container")
+        self.assertIn("tests", os.listdir("container"))
+        self.assertIn("__init__.py", os.listdir("container/tests"))
 
 
 
