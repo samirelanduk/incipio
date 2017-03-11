@@ -175,3 +175,15 @@ class PackageCreationParameterTests(IncipioTest):
         mock_creator.assert_called_with(
          "container/testpack", "testpack", author="Sam"
         )
+
+
+    @patch("incipio.package.create_test_directory")
+    def test_test_creator_called_by_default(self, mock_creator):
+        create_package("testpack", "container")
+        mock_creator.assert_called_with("container/testpack")
+
+
+    @patch("incipio.package.create_test_directory")
+    def test_can_choose_not_to_create_tests(self, mock_creator):
+        create_package("testpack", "container", test=False)
+        self.assertFalse(mock_creator.called)

@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def create_package(package, location, git=True, env=False, author=None):
+def create_package(package, location, git=True, env=False, author=None, test=True):
     if not isinstance(package, str):
         raise TypeError("package name must be str, not '%s'" % str(package))
     if not isinstance(location, str):
@@ -17,6 +17,7 @@ def create_package(package, location, git=True, env=False, author=None):
     create_python_package(
      os.path.sep.join([location, package]), package, author=author
     )
+    if test: create_test_directory(os.path.sep.join([location, package]))
 
 
 def git_init(location):
