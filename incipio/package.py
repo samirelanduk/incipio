@@ -1,7 +1,7 @@
 import os
 import subprocess
 
-def create_package(package, location, git=True, env=False):
+def create_package(package, location, git=True, env=False, author=None):
     if not isinstance(package, str):
         raise TypeError("package name must be str, not '%s'" % str(package))
     if not isinstance(location, str):
@@ -14,6 +14,9 @@ def create_package(package, location, git=True, env=False):
         create_env(os.path.sep.join([location, package]))
     elif env:
         create_env(os.path.sep.join([location, package]), name=env)
+    create_python_package(
+     os.path.sep.join([location, package]), package, author=author
+    )
 
 
 def git_init(location):

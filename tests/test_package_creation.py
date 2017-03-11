@@ -150,3 +150,19 @@ class PackageCreationParameterTests(IncipioTest):
     def test_can_provide_env_name(self, mock_env):
         create_package("testpack", "container", env="macenv")
         mock_env.assert_called_with("container/testpack", name="macenv")
+
+
+    @patch("incipio.package.create_python_package")
+    def test_py_package_creator_called(self, mock_creator):
+        create_package("testpack", "container")
+        mock_creator.assert_called_with(
+         "container/testpack", "testpack", author=None
+        )
+
+
+    @patch("incipio.package.create_python_package")
+    def test_py_package_creator_given_name(self, mock_creator):
+        create_package("testpack", "container", author="Sam")
+        mock_creator.assert_called_with(
+         "container/testpack", "testpack", author="Sam"
+        )
