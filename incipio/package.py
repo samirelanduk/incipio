@@ -1,5 +1,6 @@
 import os
 import subprocess
+from datetime import datetime
 
 def create_package(package, location, git=True, env=False, author=None, test=True):
     if not isinstance(package, str):
@@ -65,3 +66,23 @@ def create_test_directory(location):
     os.makedirs("%s%s%s" % (location, os.path.sep, "tests"))
     with open(os.path.sep.join([location, "tests", "__init__.py"]), "w") as f:
         f.write("")
+
+
+def create_license(location, license, author):
+    here = os.path.dirname(os.path.realpath(__file__))
+    contents = None
+    if license == "mit":
+        with open(here + "/MIT") as f:
+            contents = f.read() % (datetime.now().year, author)
+    elif license == "apache":
+        with open(here + "/apache") as f:
+            contents = f.read() % (datetime.now().year, author)
+    elif license == "gnu":
+        with open(here + "/GNU") as f:
+            contents = f.read() % (datetime.now().year, author)
+    else:
+        raise ValueError(
+         "'%s' isn't a license incipio knows about." % str(license)
+        )
+    with open(os.path.sep.join([location, "LICENSE"]), "w") as f:
+        f.write(contents)

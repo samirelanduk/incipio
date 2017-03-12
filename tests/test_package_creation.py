@@ -3,6 +3,7 @@ from unittest.mock import patch
 from base import IncipioTest
 from incipio.package import create_package, git_init, git_ignore, create_env
 from incipio.package import create_python_package, create_test_directory
+from incipio.package import create_license
 
 class BasicCreationTests(IncipioTest):
 
@@ -114,6 +115,44 @@ class TestDirectoryCreationTests(IncipioTest):
         create_test_directory("container")
         self.assertIn("tests", os.listdir("container"))
         self.assertIn("__init__.py", os.listdir("container/tests"))
+
+
+
+class LicenseCreationTests(IncipioTest):
+
+    def test_can_make_mit_license(self):
+        create_license("container", "mit", "Sam")
+        self.assertIn("LICENSE", os.listdir("container"))
+        with open("container/LICENSE") as f:
+            data = f.read()
+            self.assertIn("MIT", data)
+            self.assertIn("Sam", data)
+            self.assertIn(str(self.current_year), data)
+
+
+    def test_can_make_apache_license(self):
+        create_license("container", "apache", "Sam")
+        self.assertIn("LICENSE", os.listdir("container"))
+        with open("container/LICENSE") as f:
+            data = f.read()
+            self.assertIn("apache", data)
+            self.assertIn("Sam", data)
+            self.assertIn(str(self.current_year), data)
+
+
+    def test_can_make_gnu_license(self):
+        create_license("container", "gnu", "Sam")
+        self.assertIn("LICENSE", os.listdir("container"))
+        with open("container/LICENSE") as f:
+            data = f.read()
+            self.assertIn("GNU", data)
+            self.assertIn("Sam", data)
+            self.assertIn(str(self.current_year), data)
+
+
+    def test_disallowed_licenses(self):
+        with self.assertRaises(ValueError):
+            create_license("container", "wrong", "Sam")
 
 
 
