@@ -2,7 +2,7 @@ import os
 import subprocess
 from datetime import datetime
 
-def create_package(package, location, git=True, env=False, author=None, test=True):
+def create_package(package, location, git=True, env=False, author=None, test=True, license="mit"):
     if not isinstance(package, str):
         raise TypeError("package name must be str, not '%s'" % str(package))
     if not isinstance(location, str):
@@ -19,6 +19,10 @@ def create_package(package, location, git=True, env=False, author=None, test=Tru
      os.path.sep.join([location, package]), package, author=author
     )
     if test: create_test_directory(os.path.sep.join([location, package]))
+    if license:
+        create_license(
+         os.path.sep.join([location, package]), license, author if author else ""
+        )
 
 
 def git_init(location):

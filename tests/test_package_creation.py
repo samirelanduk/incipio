@@ -226,3 +226,27 @@ class PackageCreationParameterTests(IncipioTest):
     def test_can_choose_not_to_create_tests(self, mock_creator):
         create_package("testpack", "container", test=False)
         self.assertFalse(mock_creator.called)
+
+
+    @patch("incipio.package.create_license")
+    def test_license_creator_called_by_default(self, mock_creator):
+        create_package("testpack", "container")
+        mock_creator.assert_called_with("container/testpack", "mit", "")
+
+
+    @patch("incipio.package.create_license")
+    def test_can_choose_not_to_create_license(self, mock_creator):
+        create_package("testpack", "container", license=False)
+        self.assertFalse(mock_creator.called)
+
+
+    @patch("incipio.package.create_license")
+    def test_license_creator_can_vary_license(self, mock_creator):
+        create_package("testpack", "container", license="gnu")
+        mock_creator.assert_called_with("container/testpack", "gnu", "")
+
+
+    @patch("incipio.package.create_license")
+    def test_license_creator_can_be_given_author(self, mock_creator):
+        create_package("testpack", "container", author="Sam")
+        mock_creator.assert_called_with("container/testpack", "mit", "Sam")
