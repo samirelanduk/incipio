@@ -1,8 +1,24 @@
+"""Tools for creating Python packages, of the kind you might find on PyPI."""
+
 import os
 import subprocess
 from datetime import datetime
 
 def create_package(package, location, git=True, env=False, author=None, test=True, license="mit"):
+    """Creates a new Python package.
+
+    :param str package: The name of the package.
+    :param str location: The location in file space that the package should be\
+    created in.
+    :param bool git: If True, the package will be made a Git repository. You\
+    need to have git installed for this to work.
+    :param env: If True, a virtual environment will be created. If a string is\
+    given, that will be the name of the environment.
+    :param str author: The name of the package author.
+    :param bool test: If True, a test directory will be created.
+    :param str license: The kind of license to use. Options are 'mit',\
+    'apache', or 'gnu'."""
+    
     if not isinstance(package, str):
         raise TypeError("package name must be str, not '%s'" % str(package))
     if not isinstance(location, str):

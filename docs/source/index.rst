@@ -7,7 +7,7 @@ Example
 -------
 
   >>> import incipio
-  >>> incipio.create_package(".", "pyAwesome", author="Guido")
+  >>> incipio.create_package("pyAwesome", ".", author="Guido")
 
 
 Table of Contents
@@ -16,4 +16,5 @@ Table of Contents
 .. toctree ::
 
     installing
+    api
     changelog
